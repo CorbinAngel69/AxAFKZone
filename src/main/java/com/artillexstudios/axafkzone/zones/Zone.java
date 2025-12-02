@@ -127,8 +127,13 @@ public class Zone {
 
     private void leave(Player player, Iterator<Map.Entry<Player, Integer>> it) {
         if (player.isOnline()) {
-            msg.sendLang(player, "messages.left", Map.of("%time%", TimeUtils.fancyTime(zonePlayers.get(player) * 1_000L)));
-        }
+    Title.create(
+            StringUtils.format(settings.getString("messages.left.title", "<red>Left Zone")),
+            StringUtils.format(settings.getString("messages.left.subtitle", "AFK time: %time%")
+                    .replace("%time%", TimeUtils.fancyTime(zonePlayers.get(player) * 1_000L))),
+            10, 20, 10
+    ).send(player);
+}
         it.remove();
         BossBar bossBar = bossbars.remove(player);
         if (bossBar != null) bossBar.remove();
