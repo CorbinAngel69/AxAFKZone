@@ -137,7 +137,6 @@ public class Zone {
         it.remove();
         BossBar bossBar = bossbars.remove(player);
         if (bossBar != null) bossBar.remove();
-        removeTitle(player);
     }
 
     private void sendTitle(Player player) {
