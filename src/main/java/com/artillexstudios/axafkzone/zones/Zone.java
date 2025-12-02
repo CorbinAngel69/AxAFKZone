@@ -102,8 +102,12 @@ public class Zone {
     private void enter(Player player) {
         BossBar bossBar = bossbars.remove(player);
         if (bossBar != null) bossBar.remove();
-
-        msg.sendLang(player, "messages.entered", Map.of("%time%", TimeUtils.fancyTime(rewardSeconds * 1_000L)));
+        Title.create(
+        StringUtils.format(settings.getString("messages.entered.title", "<green>Entered!")),
+        StringUtils.format(settings.getString("messages.entered.subtitle", "Next reward in %time%")
+                .replace("%time%", TimeUtils.fancyTime(rewardSeconds * 1_000L))),
+        10, 20, 10
+).send(player);
         zonePlayers.put(player, 0);
 
         Section section;
