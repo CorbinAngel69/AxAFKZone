@@ -181,46 +181,26 @@ public class Zone {
     }
 
     private void giveRewards(Player player, int newTime) {
-    final List<Reward> rewardList = rollAndGiveRewards(player);
+        final List<Reward> rewardList = rollAndGiveRewards(player);
+        if (settings.getStringList("messages.reward").isEmpty()) return;
 
-    List<String> rewardMsg = settings.getStringList("messages.reward");
-
-    if (rewardMsg.size() >= 2) {
-        String title = StringUtils.format(
-                rewardMsg.get(0)
-                        .replace("%time%", TimeUtils.fancyTime(newTime * 1_000L))
-        );
-
-        String sub = StringUtils.format(
-                rewardMsg.get(1)
-                        .replace("%time%", TimeUtils.fancyTime(newTime * 1_000L))
-        );
-
-        Title.create(title, sub, 10, 40, 10).send(player);
-    } else {
-        for (String line : rewardMsg) {
-            player.sendMessage(StringUtils.formatToString(
-                    line,
-                    Map.of("%time%", TimeUtils.fancyTime(newTime * 1_000L))
-            ));
-        }
-    }
-
-    final String prefix = CONFIG.getString("prefix");
-    for (String string : rewardMsg) {
-        if (string.contains("%reward%")) {
-            for (Reward reward : rewardList) {
-                player.sendMessage(StringUtils.formatToString(
-                        prefix + string,
-                        Map.of(
-                                "%reward%", Optional.ofNullable(reward.getDisplay()).orElse("---"),
-                                "%time%", TimeUtils.fancyTime(newTime * 1_000L)
-                        )
-                ));
+        final String prefix = CONFIG.getString("prefix");
+        boolean first = true;
+        for (String string : settings.getStringList("messages.reward")) {
+            if (first) {
+                string = prefix + string;
+                first = false;
             }
+
+            if (string.contains("%reward%")) {
+                for (Reward reward : rewardList) {
+                    player.sendMessage(StringUtils.formatToString(string, Map.of("%reward%", Optional.ofNullable(reward.getDisplay()).orElse("---"), "%time%", TimeUtils.fancyTime(newTime * 1_000L))));
+                }
+                continue;
+            }
+            player.sendMessage(StringUtils.formatToString(string, Map.of("%time%", TimeUtils.fancyTime(newTime * 1_000L))));
         }
     }
-}
 
     public long timeUntilNext(Player player) {
         Integer time = zonePlayers.get(player);
