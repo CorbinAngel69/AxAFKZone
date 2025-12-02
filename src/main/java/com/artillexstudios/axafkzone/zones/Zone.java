@@ -103,8 +103,8 @@ public class Zone {
         BossBar bossBar = bossbars.remove(player);
         if (bossBar != null) bossBar.remove();
         Title.create(
-        StringUtils.format(settings.getString("messages.entered.title", "<green>Entered!")),
-        StringUtils.format(settings.getString("messages.entered.subtitle", "Next reward in %time%")
+        StringUtils.format(settings.getString("messages.entered.title", "<green>AFK ZONE")),
+        StringUtils.format(settings.getString("messages.entered.subtitle", "You just entered!")
                 .replace("%time%", TimeUtils.fancyTime(rewardSeconds * 1_000L))),
         10, 20, 10
 ).send(player);
@@ -128,8 +128,8 @@ public class Zone {
     private void leave(Player player, Iterator<Map.Entry<Player, Integer>> it) {
         if (player.isOnline()) {
     Title.create(
-            StringUtils.format(settings.getString("messages.left.title", "<red>Left Zone")),
-            StringUtils.format(settings.getString("messages.left.subtitle", "AFK time: %time%")
+            StringUtils.format(settings.getString("messages.left.title", "<red>AFK ZONE")),
+            StringUtils.format(settings.getString("messages.left.subtitle", "You just left!")
                     .replace("%time%", TimeUtils.fancyTime(zonePlayers.get(player) * 1_000L))),
             10, 20, 10
     ).send(player);
